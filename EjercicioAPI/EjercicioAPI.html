@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>EjercicioAPI</title>
+    <link rel="stylesheet" type="text/css" href="gradientebotones.css" media="screen" />
+    <style>
+        @font-face {
+        font-family: PokemonSolid;
+        src: url(fuente/PokemonSolid.ttf);
+        }
+		*
+		{
+			letter-spacing: 3px;
+		}
+        #cuadroBusqueda
+        {
+            
+            border: solid 2px; 
+           
+
+            background: rgba(19,28,36,1);
+            background: -moz-linear-gradient(left, rgba(19,28,36,1) 0%, rgba(5,110,197,1) 100%);
+            background: -webkit-gradient(left top, right top, color-stop(0%, rgba(19,28,36,1)), color-stop(100%, rgba(5,110,197,1)));
+            background: -webkit-linear-gradient(left, rgba(19,28,36,1) 0%, rgba(5,110,197,1) 100%);
+            background: -o-linear-gradient(left, rgba(19,28,36,1) 0%, rgba(5,110,197,1) 100%);
+            background: -ms-linear-gradient(left, rgba(19,28,36,1) 0%, rgba(5,110,197,1) 100%);
+            background: linear-gradient(to right, rgba(19,28,36,1) 0%, rgba(5,110,197,1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#131c24', endColorstr='#056ec5', GradientType=1 );
+        }
+		.zoomIt
+		{
+				display:block!important;
+				-webkit-transition:-webkit-transform 0.5s ease-out;
+				-moz-transition:-moz-transform 0.5s ease-out;
+				-o-transition:-o-transform 0.5s ease-out;
+				-ms-transition:-ms-transform 0.5s ease-out;
+				transition:transform 0.5s ease-out;
+		}
+		.zoomIt:hover
+		{
+			-moz-transform: scale(1.5);
+			-webkit-transform: scale(1.5);
+			-o-transform: scale(1.5);
+			-ms-transform: scale(1.5);
+			transform: scale(1.5)
+		}
+		.strokeWater {
+			-webkit-text-fill-color: #66ccff;
+			-webkit-text-stroke: 1px black;
+		}
+		.strokeFire
+		{
+			-webkit-text-fill-color: #ff4d4d;
+			-webkit-text-stroke: 1px black;
+		}
+		.strokeGrass
+		{
+			-webkit-text-fill-color: #66ff99;
+			-webkit-text-stroke: 1px black;
+		}
+		.strokeColorless
+		{
+			-webkit-text-fill-color: white;
+			-webkit-text-stroke: 1px black;
+		}
+		.strokeDarkness
+		{
+			-webkit-text-fill-color: black;
+			-webkit-text-stroke: 1px white;
+		}
+		.strokeFighting
+		{
+			-webkit-text-fill-color: #990000;
+			-webkit-text-stroke: 1px black;
+		}
+		.strokePsychic
+		{
+			-webkit-text-fill-color: #993399;
+			-webkit-text-stroke: 1px black;
+		}
+		.strokeLightning
+		{
+			-webkit-text-fill-color: #ffff00;
+			-webkit-text-stroke: 1px black;
+		}
+		.strokeMetal
+		{
+			-webkit-text-fill-color: #737373;
+			-webkit-text-stroke: 1px black;
+		}
+		.stroke
+		{
+			-webkit-text-fill-color: #ffff99;
+			-webkit-text-stroke: 1px black;
+		}
+		.strokeTipos
+		{
+			
+			-webkit-text-fill-color:#404040;
+			-webkit-text-stroke: 0.05em white;
+		}
+        #cuadroAyuda
+        {
+            width: 25px;
+            height: 25px;
+            border: 1px solid black;
+            border-radius: 40%;
+            background-color: rgb(253, 253, 253);
+        }
+    </style>
+</head>
+<script type="text/javascript">
+    function descargaArchivo() 
+    {
+
+        // 1.-Instancia del objeto XMLHttpRequest
+        if (window.XMLHttpRequest) {
+            peticion_http = new XMLHttpRequest();
+        } else if (window.ActiveXObject) { // navegadores obsoletos
+            peticion_http = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        // 2.-Preparar la funcion de respuesta
+        peticion_http.onreadystatechange = muestraContenido;
+
+        // 3.-Realizar peticion HTTP
+        var url = "https://api.pokemontcg.io/v1/cards";
+        peticion_http.open('GET', url, true);
+        peticion_http.send(null);
+
+	// 4.-Respuesta del servidor
+        function muestraContenido() {
+
+            if (peticion_http.readyState == 4 && peticion_http.status == 200) {
+
+                // se recoge el doc con notacion json
+                var respuesta_json = peticion_http.responseText;
+                objeto_json = eval("(" + respuesta_json + ")");
+
+                console.log(objeto_json);
+
+                console.log(objeto_json.cards[1]);
+
+                for(var i = 0; i<50; i++)
+                {
+                    var carta = objeto_json.cards[i];
+                    var divcarta = document.createElement("div");
+                    var elemento = document.createElement("h3");
+                    var fotocarta = document.createElement("img");
+
+                    elemento.innerHTML = carta.name;
+                    fotocarta.src = carta.imageUrl;
+					fotocarta.className = "zoomIt";
+                    
+                    elemento.style.fontFamily = "PokemonSolid"; 
+                    elemento.style.textAlign = "center";
+                    
+                    var tipoPokemon = carta.types;
+                    //console.log(tipoPokemon);
+
+                    
+                        switch(carta.types)
+                        {
+                            case "Water":
+                                
+                                elemento.className ="strokeWater";
+                            break;
+				
+							case "Fire":
+								elemento.className= "strokeFire";
+							break;
+							case "Colorless":
+								elemento.className = "strokeColorless";
+							break;
+							case "Psychic":
+								elemento.className= "strokePsychic";
+							break;
+							case "Darkness":
+								elemento.className= "strokeDarkness";
+							break;
+							case "Lightning":
+								elemento.className= "strokeLightning";
+							break;
+							case "Fighting":
+								elemento.className= "strokeFighting";
+							break;
+							case "Metal":
+								elemento.className= "strokeMetal";
+							break;
+							case "Grass":
+								elemento.className= "strokeGrass";
+							break;
+
+                            default:
+                                
+                                elemento.className ="stroke";
+                                
+                        }
+                    
+                    elemento.style.border = "solid 4px #DFC60A";
+                    elemento.style.borderRadius = "5px";
+
+                    divcarta.style.float = "left";
+                    divcarta.style.width = "20%";
+                    divcarta.style.height = "450px";
+                    divcarta.style.marginBottom = "50px";
+                    
+
+                    divcarta.appendChild(elemento);
+                    divcarta.appendChild(fotocarta);
+
+                    cuadroCartas.appendChild(divcarta);
+
+
+                }
+            }
+        }
+        
+    }
+    function eliminarCartas()
+    {
+        var elemento  = document.getElementById("cartas");
+        while (elemento.firstChild) {
+         elemento.removeChild(elemento.firstChild);
+        }
+    }
+    function ayudaover()
+    {
+        
+        
+        ayuda = document.createElement("div");
+        ayuda.style.width = "200px";
+        ayuda.style.height = "200px";
+        ayuda.style.position = "absolute";
+        ayuda.style.top = "10%";
+        ayuda.style.left = "20%";
+        ayuda.style.border = "5px solid black";
+        ayuda.style.borderRadius = "5%";
+        ayuda.style.backgroundColor = "white";
+        ayuda.style.fontSize = "20px";
+        var contenido = document.createTextNode("En esta opcion podemos elegir el pokemon referente a su posicion en la guia pokemon/pokedex");
+        ayuda.appendChild(contenido);
+        cuadroAyuda.appendChild(ayuda);
+    }
+    function ayudaout()
+    { 
+        
+	    cuadroAyuda.removeChild(ayuda);	
+        
+        
+    }
+    function ningunaCarta()
+    {
+        
+        cartas=document.getElementById("cartas");
+   
+        noExisten = document.createTextNode("No existen Pokemon con esos parametros :)");
+        noHayCartasTexto = document.createElement("h1");
+        noHayCartasTexto.appendChild(noExisten);
+        noHayCartasTexto.style.fontFamily = "PokemonSolid";
+        noHayCartasTexto.style.textAlign = "center";
+
+        noHayCartas = document.createElement("div");
+        noHayCartas.style.width = "1080px";
+        noHayCartas.style.height = "700px";
+        noHayCartas.style.borderRadius = "25px";
+        noHayCartas.style.position = "relative";
+        noHayCartas.style.top = "100px";
+        noHayCartas.style.left = "5%";
+        noHayCartas.style.backgroundImage = "url('imagen/nohaycartas.png')";
+        noHayCartas.appendChild(noHayCartasTexto);
+        cartas.appendChild(noHayCartas);
+
+    }
+    function buscaNombre()
+    {
+      nombrePokemon = document.getElementById("nombrePokemon").value;
+      console.log(nombrePokemon);
+        
+      eliminarCartas();
+                            
+                            // 1.-Instancia del objeto XMLHttpRequest
+                            if (window.XMLHttpRequest) {
+                                peticion_http = new XMLHttpRequest();
+                            } else if (window.ActiveXObject) { // navegadores obsoletos
+                                peticion_http = new ActiveXObject("Microsoft.XMLHTTP");
+                            }
+
+                            // 2.-Preparar la funcion de respuesta
+                            peticion_http.onreadystatechange = muestraContenido;
+
+                            // 3.-Realizar peticion HTTP
+                            var url = "https://api.pokemontcg.io/v1/cards?name="+nombrePokemon;
+                            peticion_http.open('GET', url, true);
+                            peticion_http.send(null);
+
+                            // 4.-Respuesta del servidor
+                            function muestraContenido() {
+
+                                if (peticion_http.readyState == 4 && peticion_http.status == 200) {
+
+                                    // se recoge el doc con notacion json
+                                    var respuesta_json = peticion_http.responseText;
+                                    objeto_json = eval("(" + respuesta_json + ")");
+
+                                    console.log(objeto_json);
+
+                                    console.log(objeto_json.cards[1]);
+                                    if(objeto_json.cards < 1)
+                                    {
+                                        ningunaCarta();
+                                    }
+                                    for(var i = 0; i<50; i++)
+                                    {
+                                        var carta = objeto_json.cards[i];
+                                        var divcarta = document.createElement("div");
+                                        var elemento = document.createElement("h3");
+                                        var fotocarta = document.createElement("img");
+
+                                        var datos = document.createElement("div");
+                                        datos.id = carta.id;
+                                        datos.setAttribute("vida",carta.hp);
+                                        datos.setAttribute("numeroPoke",carta.nationalPokedexNumber);
+                                        datos.setAttribute("set",carta.set);
+                                        datos.setAttribute("series",carta.series);
+                                        datos.setAttribute("artista",carta.artist);
+                                        datos.setAttribute("debilidad",carta.weaknesses[0].type);
+                                        
+                                        elemento.innerHTML = carta.name;
+                                        fotocarta.src = carta.imageUrl;
+										fotocarta.className = "zoomIt";
+                                        
+                                        elemento.style.fontFamily = "PokemonSolid"; 
+                                        elemento.style.textAlign = "center";
+                                        
+                                        var tipoPokemon = carta.types;
+                                        //console.log(tipoPokemon);
+
+                                        
+                        switch(carta.types[0])
+                        {
+                            case "Water":
+                                
+                                elemento.className ="strokeWater";
+                            break;
+				
+							case "Fire":
+								elemento.className= "strokeFire";
+							break;
+							case "Colorless":
+								elemento.className = "strokeColorless";
+							break;
+							case "Psychic":
+								elemento.className= "strokePsychic";
+							break;
+							case "Darkness":
+								elemento.className= "strokeDarkness";
+							break;
+							case "Lightning":
+								elemento.className= "strokeLightning";
+							break;
+							case "Fighting":
+								elemento.className= "strokeFighting";
+							break;
+							case "Metal":
+								elemento.className= "strokeMetal";
+							break;
+							case "Grass":
+								elemento.className= "strokeGrass";
+							break;
+
+                            default:
+                                
+                                elemento.className ="stroke";
+                                
+                        }
+                                        
+                                        elemento.style.border = "solid 4px #DFC60A";
+                                        elemento.style.borderRadius = "5px";
+
+                                        divcarta.style.float = "left";
+                                        divcarta.style.width = "20%";
+                                        divcarta.style.height = "450px";
+                                        divcarta.style.marginBottom = "50px";
+                                        
+
+                                        divcarta.appendChild(elemento);
+                                        divcarta.appendChild(fotocarta);
+                                        divcarta.addEventListener("click", function(){clickCarta(this)}, false);
+                                        cuadroCartas.appendChild(divcarta);
+
+
+                                    }
+                                }
+                            }
+                 
+    }
+    function prueba (elTipo)
+    {
+        eliminarCartas();
+            // 1.-Instancia del objeto XMLHttpRequest
+            if (window.XMLHttpRequest) {
+                peticion_http = new XMLHttpRequest();
+            } else if (window.ActiveXObject) { // navegadores obsoletos
+                peticion_http = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+
+            // 2.-Preparar la funcion de respuesta
+            peticion_http.onreadystatechange = muestraContenido;
+
+            // 3.-Realizar peticion HTTP
+            var url = "https://api.pokemontcg.io/v1/cards?types="+ elTipo;
+            peticion_http.open('GET', url, true);
+            peticion_http.send(null);
+
+            // 4.-Respuesta del servidor
+            function muestraContenido() {
+
+                if (peticion_http.readyState == 4 && peticion_http.status == 200) {
+
+                    // se recoge el doc con notacion json
+                    var respuesta_json = peticion_http.responseText;
+                    objeto_json = eval("(" + respuesta_json + ")");
+
+                    console.log(objeto_json);
+
+                    console.log(objeto_json.cards[1]);
+                    if(objeto_json.cards < 1)
+                    {
+                        ningunaCarta();
+                    }
+                    for(var i = 0; i<50; i++)
+                    {
+                        var carta = objeto_json.cards[i];
+                        var divcarta = document.createElement("div");
+                        
+                        var elemento = document.createElement("h3");
+                        var fotocarta = document.createElement("img");
+                        
+                        var datos = document.createElement("div");
+                        datos.id = carta.id;
+                        datos.setAttribute("vida",carta.hp);
+                        datos.setAttribute("numeroPoke",carta.nationalPokedexNumber);
+                        datos.setAttribute("set",carta.set);
+                        datos.setAttribute("series",carta.series);
+                        datos.setAttribute("artista",carta.artist);
+                        datos.setAttribute("debilidad",carta.weaknesses[0].type);
+
+
+                        elemento.innerHTML = carta.name;
+                        fotocarta.src = carta.imageUrl;
+						fotocarta.className = "zoomIt";
+                        
+                        elemento.style.fontFamily = "PokemonSolid"; 
+                        elemento.style.textAlign = "center";
+						
+                        
+                        var tipoPokemon = carta.types;
+                        //console.log(tipoPokemon);
+
+                        
+                        switch(carta.types[0])
+                        {
+                            case "Water":
+                                
+                                elemento.className ="strokeWater";
+                            break;
+				
+							case "Fire":
+								elemento.className= "strokeFire";
+							break;
+							case "Colorless":
+								elemento.className = "strokeColorless";
+							break;
+							case "Psychic":
+								elemento.className= "strokePsychic";
+							break;
+							case "Darkness":
+								elemento.className= "strokeDarkness";
+							break;
+							case "Lightning":
+								elemento.className= "strokeLightning";
+							break;
+							case "Fighting":
+								elemento.className= "strokeFighting";
+							break;
+							case "Metal":
+								elemento.className= "strokeMetal";
+							break;
+							case "Grass":
+								elemento.className= "strokeGrass";
+							break;
+
+                            default:
+                                
+                                elemento.className ="stroke";
+                                
+                        }
+                        
+                        elemento.style.border = "solid 4px #DFC60A";
+                        elemento.style.borderRadius = "5px";
+
+                        divcarta.style.float = "left";
+                        divcarta.style.width = "20%";
+                        divcarta.style.height = "450px";
+                        divcarta.style.marginBottom = "50px";
+                        
+                        divcarta.appendChild(datos);
+                        divcarta.appendChild(elemento);
+                        divcarta.appendChild(fotocarta);
+                        
+                        divcarta.addEventListener("click", function(){clickCarta(this)}, false);
+                        cuadroCartas.appendChild(divcarta);
+
+
+                    }
+                }
+            }
+
+
+    }
+    function clickCarta(carta)
+  {
+    console.log(carta);
+    Carta = carta.getElementsByTagName("div")[0];
+    
+    nombreCartaPokemon =carta.getElementsByTagName("h3")[0].textContent;
+
+    imagenCartaPokemon = carta.getElementsByTagName("img")[0].src;
+    
+                    
+                    fondo = document.getElementsByTagName("body")[0];
+                    fondoTransparente = document.createElement("div");
+                    fondoTransparente.onclick = "";
+                    fondoTransparente.style.position = "fixed";
+                    fondoTransparente.style.top = "0px";
+                    fondoTransparente.style.left = "0px";
+                    fondoTransparente.style.backgroundColor = "black";
+                    fondoTransparente.style.opacity = "0.5";
+                    fondoTransparente.style.width= "100%";
+                    fondoTransparente.style.height= "100%";
+                    cuadroInformacion = document.createElement("div");
+                    cuadroInformacion.style.position = "fixed";
+                    cuadroInformacion.style.backgroundColor = "white";
+                    cuadroInformacion.style.top = "25%";
+                    cuadroInformacion.style.left = "25%";
+                    cuadroInformacion.style.width = "700px";
+                    cuadroInformacion.style.height = "500px";
+                    cuadroInformacion.style.opacity = "100";
+                    var elemento = document.createElement("h3");
+                    var fotocarta = document.createElement("img");
+
+                    elemento.innerHTML = nombreCartaPokemon;
+                    fotocarta.src = imagenCartaPokemon;
+                    
+                    elemento.style.fontFamily = "PokemonSolid"; 
+                    elemento.style.textAlign = "center";
+
+                    cerrar = document.createElement("div");
+                    cerrar.style.position = "relative"
+                    cerrar.style.left = "97%";
+                    cerrar.style.width = "20px";
+                    cerrar.style.height = "20px";
+                    cerrar.style.backgroundColor = "black";
+
+                    statusPoke = document.createElement("div");
+                    statusPoke.style.width = "60%";
+                    statusPoke.style.height = "70%";
+                    statusPoke.style.backgroundColor = "red";
+                    statusPoke.style.position= "relative";
+                    statusPoke.style.top = "-360px";
+                    statusPoke.style.left = "275px";
+                    
+                    textoId = document.createElement("h2");
+                    textoVida = document.createElement("h2");
+                    textoNumero = document.createElement("h2");
+                    textoSet =  document.createElement("h2");
+                    textoSerie = document.createElement("h2");
+                    textoArtista = document.createElement("h2");
+                    textoDebilidad = document.createElement("h2");
+                    
+                    textoId.innerHTML= "Id: " +Carta.id;
+                    textoVida.innerHTML = "Vida: "+ Carta.getAttribute("vida");
+                    textoNumero.innerHTML = "Numero de pokemon: "+Carta.getAttribute("numeropoke");
+                    textoSet.innerHTML = "A que etapa pertence: "+Carta.getAttribute("set");
+                    textoSerie.innerHTML = "Serie: " +Carta.getAttribute("series");
+                    textoArtista.innerHTML = "Artista: "+Carta.getAttribute("artista");
+                    textoDebilidad.innerHTML = "Debilidad: "+Carta.getAttribute("debilidad");
+                    var textos = [textoId,textoVida,textoNumero, textoSet ,textoSerie, textoArtista, textoDebilidad];
+                    
+                   
+                        statusPoke.appendChild(textoId);
+                        statusPoke.appendChild(textoVida);
+                        statusPoke.appendChild(textoNumero);
+                        statusPoke.appendChild(textoSet);
+                        statusPoke.appendChild(textoSerie);
+                        statusPoke.appendChild(textoArtista);
+                        statusPoke.appendChild(textoDebilidad);
+                        
+                    
+                    
+                    
+                    cerrar.addEventListener("click", function()
+                    {
+                        fondo.removeChild(cuadroInformacion);
+                        fondo.removeChild(fondoTransparente);
+                    }, false);
+
+
+                    equis = document.createElement("img");
+                    equis.src = "imagen/cruz_roja.png";
+                    equis.style.width ="100%";
+                    equis.style.height ="100%";
+
+
+
+                    cerrar.appendChild(equis);
+                   
+                    cuadroInformacion.appendChild(cerrar);
+                    cuadroInformacion.appendChild(elemento);
+                    cuadroInformacion.appendChild(fotocarta);
+                    cuadroInformacion.appendChild(statusPoke);
+                    
+                    fondo.appendChild(fondoTransparente);
+                    fondo.appendChild(cuadroInformacion);
+
+  }
+
+
+
+    function resalta(elEvento) 
+    {
+        var evento = elEvento || window.event;
+        switch(evento.type) {
+        case 'mouseover':
+        this.style.borderColor = '#66ff33';
+        break;
+        case 'mouseout':
+        this.style.borderColor = 'white';
+        break;
+  }
+
+}
+ 
+    window.onload = function()
+    {
+
+        signo = document.getElementById("signo");
+        signo.style.width = "100%";
+        signo.style.height = "100%";
+        cuadroAyuda = document.getElementById("cuadroAyuda");
+        cuadroAyuda.onmouseover = ayudaover;
+        cuadroAyuda.onmouseout = ayudaout;
+
+        fondo=document.getElementById("fondo");
+        fondo.style.width = "97%"
+        //fondo.style.height = "1000px";
+        fondo.style.backgroundImage = "url('imagen/fondo.jpg')";
+        fondo.style.border = "double grey 10px";
+        fondo.style.borderRadius = "1%";
+        fondo.style.position = "absolute";
+        fondo.style.left = "1%";
+
+        cabecera=document.getElementById("cabecera");
+        cabecera.style.width = "70%"
+        cabecera.style.height = "300px"
+        
+        
+		
+
+        cabecera.style.border = "solid 5px blue";
+        cabecera.style.borderRadius = "25%";
+        cabecera.style.position = "relative";
+        cabecera.style.top = "20px";
+        cabecera.style.left= "16%";
+        cabecera.style.backgroundRepeat = " no-repeat";
+
+        imagen = document.getElementById('imagen');		
+		imagen.src = "imagen/cabecera.png";
+        imagen.style.width = "100%";
+        imagen.style.height= "95%";
+        imagen.style.position = "relative";
+
+
+        bloqueCartas=document.getElementById("bloqueCartas");
+        bloqueCartas.style.width = "90%";
+        bloqueCartas.style.height = "100%";
+        bloqueCartas.style.position = "relative";
+        bloqueCartas.style.left = "5%";
+        bloqueCartas.style.top = "50px";
+
+        cuadroBusqueda=document.getElementById("cuadroBusqueda");
+        cuadroBusqueda.style.width = "100%";
+        cuadroBusqueda.style.height = "300px";
+        //cuadroBusqueda.style.backgroundColor = "#056EC5";
+        cuadroBusqueda.style.borderRadius = "25px";
+        /*
+         *TYPES: FIRE,WATER, METAL, GRASS, Psychic,Darkness,Lightning,Fighting,Colorless
+         *
+         *SUPERTYPE: Energy, Trainer, Pokémon
+         *
+         *rarity:Rare, Rare Holo, Common, Rare Holo EX,Rare Holo Lv.X, Rare Ultra,Rare Secret
+         *
+         *nationalPokedexNumber: numero
+         *
+         */
+        //fuego = "Fire";
+        //agua = "Water";
+        cuadroCartas = document.getElementById("cartas");
+        //EL CUADRO DE LOS TIPOS
+        tiposPoke = document.getElementById("tipo");
+            tiposPoke.style.width = "32%";
+            tiposPoke.style.height = "50%";
+            tiposPoke.style.float = "left";
+            tiposPoke.style.paddingLeft = "3px";
+            tiposPoke.style.paddingRight = "3px";
+        //LOS H3 DEL CUADRO DE BUSQUEDA
+                tiposTexto = document.getElementById("tiposTexto");
+                tiposTexto.style.textAlign ="center";
+                tiposTexto.style.fontFamily ="PokemonSolid";
+                tiposTexto.style.color = "#e6b800";
+                tiposTexto.style.background = "#0066ff";
+                tiposTexto.style.borderRadius = "15px";
+                tiposTexto.style.border = "Solid 5px #e6b800";
+
+                numeroTexto = document.getElementById("numeroTexto");
+                numeroTexto.style.textAlign ="center";
+                numeroTexto.style.fontFamily ="PokemonSolid";
+                numeroTexto.style.color = "#e6b800";
+                numeroTexto.style.background = "#0066ff";
+                numeroTexto.style.borderRadius = "15px";
+                numeroTexto.style.border = "Solid 5px #e6b800";
+
+                nombreTexto = document.getElementById("nombreTexto");
+                nombreTexto.style.textAlign ="center";
+                nombreTexto.style.fontFamily ="PokemonSolid";
+                nombreTexto.style.color = "#e6b800";
+                nombreTexto.style.background = "#0066ff";
+                nombreTexto.style.borderRadius = "15px";
+                nombreTexto.style.border = "Solid 5px #e6b800";
+       
+		
+        //TIPOS DE POKEMON
+        for (i=1;i<=9;i++)
+        { 
+            document.getElementById("tipo"+i).style.width="25%";
+            document.getElementById("tipo"+i).style.height="33%";
+            document.getElementById("tipo"+i).style.float="left";
+            document.getElementById("tipo"+i).style.margin="5px";
+            document.getElementById("tipo"+i).style.border = "Solid 3px white";
+            document.getElementById("tipo"+i).style.borderRadius = "10%";
+            //document.getElementById("tipo"+i).style.color = "#404040";
+			document.getElementById("tipo"+i).className = "strokeTipos";
+            document.getElementById("tipo"+i).style.textAlign = "center";
+	        document.getElementById("tipo"+i).style.padding="auto";
+            document.getElementById("tipo"+i).style.fontFamily = "PokemonSolid";
+            document.getElementById("tipo"+i).onmouseover = resalta;
+            document.getElementById("tipo"+i).onmouseout = resalta;
+            elTipo = document.getElementById("tipo"+i).textContent;
+            switch (elTipo)
+            {
+                case "Normal":
+                    document.getElementById("tipo"+i).addEventListener("click", function(){prueba("Colorless")}, false); 
+                break;
+
+                case "Agua": 
+                    document.getElementById("tipo"+i).addEventListener("click", function(){prueba("Water")}, false); 
+                break;
+				
+				case "Fuego":
+                    document.getElementById("tipo"+i).addEventListener("click", function(){prueba("Fire")}, false);
+				break;
+						
+				case "Psiquico":
+                    document.getElementById("tipo"+i).addEventListener("click", function(){prueba("Psychic")}, false);
+				break;
+
+				case "Siniestro":
+                    document.getElementById("tipo"+i).addEventListener("click", function(){prueba("Darkness")}, false);
+				break;
+
+				case "Rayo":
+                    document.getElementById("tipo"+i).addEventListener("click", function(){prueba("Lightning")}, false);
+				break;
+
+				case "Lucha":
+                    document.getElementById("tipo"+i).addEventListener("click", function(){prueba("Fighting")}, false);
+				break;
+
+				case "Acero":
+                    document.getElementById("tipo"+i).addEventListener("click", function(){prueba("Metal")}, false);
+				break;
+
+				case "Planta":
+                    document.getElementById("tipo"+i).addEventListener("click", function(){prueba("Grass")}, false);
+				break;
+            }
+
+           // console.log(elTipo);
+            
+
+        }
+
+        //EL CUADRO DE NUMERO DE POKEDEX POKEMON
+        numeroPoke = document.getElementById("numero");
+            numeroPoke.style.width = "33%";
+            numeroPoke.style.height = "50%";
+            numeroPoke.style.float = "left";
+            numeroPoke.style.paddingLeft = "3px";
+            numeroPoke.style.paddingRight = "3px"; 
+            
+                numeroPokedex = document.getElementById("numeroPoke");
+                numeroPokedex.style.background = "#ffcc00";
+                numeroPokedex.style.border= "none";
+                numeroPokedex.style.fontSize= "10px";
+                numeroPokedex.style.height= "50px";
+                numeroPokedex.style.padding="5px";
+                numeroPokedex.style.width = "100%";
+                numeroPokedex.style.fontFamily= "PokemonSolid";
+                numeroPokedex.style.color= "#404040";
+                numeroPokedex.style.position = "relative"
+                
+                numeroPokedex.style.border = "Solid 5px white";
+                numeroPokedex.style.borderRadius = "50px"
+                numeroBoton = document.getElementById("confirmar");
+                numeroBoton.style.backgroundColor = "#ffcc00";
+                numeroBoton.style.position = "relative";
+                numeroBoton.style.top = "20px";
+                numeroBoton.style.left = "45%";
+                numeroBoton.style.width = "80px";
+                numeroBoton.style.height = "80px";
+                numeroBoton.style.fontFamily = "PokemonSolid";
+                numeroBoton.style.color = "#404040";
+                numeroBoton.style.border = "Solid 5px white";
+                numeroBoton.style.borderRadius = "50px"
+                numeroBoton.onmouseover = resalta;
+                numeroBoton.onmouseout = resalta;
+                numeroBoton.onclick = eliminarCartas;
+                 var select = document.getElementById('numeroPoke');
+                 var selectedOption;
+                 var numeroPokemonPokedex;
+                 select.onchange = function()
+                 {
+                    var selectedOption = select.options[select.selectedIndex];
+                    var numeroPokemonPokedex = selectedOption.textContent;
+                    
+                    eliminarCartas();
+                            
+                            // 1.-Instancia del objeto XMLHttpRequest
+                            if (window.XMLHttpRequest) {
+                                peticion_http = new XMLHttpRequest();
+                            } else if (window.ActiveXObject) { // navegadores obsoletos
+                                peticion_http = new ActiveXObject("Microsoft.XMLHTTP");
+                            }
+
+                            // 2.-Preparar la funcion de respuesta
+                            peticion_http.onreadystatechange = muestraContenido;
+
+                            // 3.-Realizar peticion HTTP
+                            var url = "https://api.pokemontcg.io/v1/cards?nationalPokedexNumber="+numeroPokemonPokedex ;
+                            peticion_http.open('GET', url, true);
+                            peticion_http.send(null);
+
+                            // 4.-Respuesta del servidor
+                            function muestraContenido() {
+
+                                if (peticion_http.readyState == 4 && peticion_http.status == 200) {
+
+                                    // se recoge el doc con notacion json
+                                    var respuesta_json = peticion_http.responseText;
+                                    objeto_json = eval("(" + respuesta_json + ")");
+
+                                    console.log(objeto_json);
+
+                                    console.log(objeto_json.cards[1]);
+                                    if(objeto_json.cards < 1)
+                                    {
+                                        ningunaCarta();
+                                    }
+                                    for(var i = 0; i<50; i++)
+                                    {
+                                        var carta = objeto_json.cards[i];
+                                        var divcarta = document.createElement("div");
+                                        var elemento = document.createElement("h3");
+                                        var fotocarta = document.createElement("img");
+
+                                        var datos = document.createElement("div");
+                                        datos.id = carta.id;
+                                        datos.setAttribute("vida",carta.hp);
+                                        datos.setAttribute("numeroPoke",carta.nationalPokedexNumber);
+                                        datos.setAttribute("set",carta.set);
+                                        datos.setAttribute("series",carta.series);
+                                        datos.setAttribute("artista",carta.artist);
+                                        datos.setAttribute("debilidad",carta.weaknesses[0].type);
+                                        elemento.innerHTML = carta.name;
+                                        fotocarta.src = carta.imageUrl;
+										fotocarta.className = "zoomIt";
+                                        
+                                        elemento.style.fontFamily = "PokemonSolid"; 
+                                        elemento.style.textAlign = "center";
+                                        
+                                        var tipoPokemon = carta.types;
+                                        //console.log(tipoPokemon);
+
+                                        
+                        switch(carta.types[0])
+                        {
+                            case "Water":
+                                
+                                elemento.className ="strokeWater";
+                            break;
+				
+							case "Fire":
+								elemento.className= "strokeFire";
+							break;
+							case "Colorless":
+								elemento.className = "strokeColorless";
+							break;
+							case "Psychic":
+								elemento.className= "strokePsychic";
+							break;
+							case "Darkness":
+								elemento.className= "strokeDarkness";
+							break;
+							case "Lightning":
+								elemento.className= "strokeLightning";
+							break;
+							case "Fighting":
+								elemento.className= "strokeFighting";
+							break;
+							case "Metal":
+								elemento.className= "strokeMetal";
+							break;
+							case "Grass":
+								elemento.className= "strokeGrass";
+							break;
+
+                            default:
+                                
+                                elemento.className ="stroke";
+                                
+                        }
+                                        
+                                        elemento.style.border = "solid 4px #DFC60A";
+                                        elemento.style.borderRadius = "5px";
+
+                                        divcarta.style.float = "left";
+                                        divcarta.style.width = "20%";
+                                        divcarta.style.height = "450px";
+                                        divcarta.style.marginBottom = "50px";
+                                        
+
+                                        divcarta.appendChild(elemento);
+                                        divcarta.appendChild(fotocarta);
+                                        
+                                        divcarta.addEventListener("click", function(){clickCarta(this)}, false);
+                                        cuadroCartas.appendChild(divcarta);
+
+
+                                    }
+                                }
+                            }
+                 };
+                
+               
+
+        //LAS OPCIONES DEL NUMERO DE POKEMON
+        for(i=1; i<800;i++)
+        {
+            opcion = document.createElement("option");
+            opcion.innerHTML=i;
+            opcion.value = i;
+            numeroPokedex.appendChild(opcion);
+        }
+        //CUADRO DEL NOMBRE DE POKEMON
+        nombrePoke = document.getElementById("nombre");
+            nombrePoke.style.width = "33%";
+            nombrePoke.style.height = "50%";
+            nombrePoke.style.float = "left";
+            nombrePoke.style.paddingLeft = "3px";
+            nombrePoke.style.paddingRight = "3px"; 
+
+            nombrePokemon = document.getElementById("nombrePokemon");
+                nombrePokemon.style.background = "#ffcc00";
+                nombrePokemon.style.border= "none";
+                nombrePokemon.style.fontSize= "15px";
+                nombrePokemon.style.height= "50px";
+                nombrePokemon.style.padding="5px";
+                nombrePokemon.style.width = "100%";
+                nombrePokemon.style.fontFamily= "PokemonSolid";
+                nombrePokemon.style.color= "#404040";
+                nombrePokemon.style.position = "relative"
+                
+                nombrePokemon.style.border = "Solid 5px white";
+                nombrePokemon.style.borderRadius = "50px";
+                nombrePokemon.style.textAlign = "center";
+
+                
+
+            nombreBoton = document.getElementById("buscar");
+                nombreBoton.style.backgroundColor = "#ffcc00";
+                nombreBoton.style.position = "relative";
+                nombreBoton.style.top = "20px";
+                nombreBoton.style.left = "45%";
+                nombreBoton.style.width = "80px";
+                nombreBoton.style.height = "80px";
+                nombreBoton.style.fontFamily = "PokemonSolid";
+                nombreBoton.style.color = "#404040";
+                nombreBoton.style.border = "Solid 5px white";
+                nombreBoton.style.borderRadius = "50px"
+                nombreBoton.onmouseover = resalta;
+                nombreBoton.onmouseout = resalta;
+                
+                
+        //TRAEMOS CARTAS ALEATORIAS     
+         descargaArchivo();
+
+    }
+</script>
+<body>
+   <div id="fondo">
+        <div id="cabecera"><img id="imagen" src=""/></div>
+        <div id="bloqueCartas">
+            <div id="cuadroBusqueda">
+                <div id="tipo">
+                    <h3 id="tiposTexto">TIPOS</h3>
+                <div id="tipo1" >Normal</div>
+                <div id="tipo2">Fuego</div>
+                <div id="tipo3">Agua</div>
+                <div id="tipo4">Rayo</div>
+                <div id="tipo5">Planta</div>
+                <div id="tipo6">Psiquico</div>
+                <div id="tipo7">Acero</div>
+                <div id="tipo8">Lucha</div>
+                <div id="tipo9">Siniestro</div>
+                </div>
+                <div id="numero">
+                        <h3 id="numeroTexto">Numero en la Pokedex</h3>
+                        <select id="numeroPoke" name="numeroPoke">
+                                <option value="" selected="selected">- Numero Pokedex -</option>
+                        </select> 
+                    <input id="confirmar" type="button" name="confirmar" value="Borrar"/>
+                    <div id="cuadroAyuda"><img id="signo"src="signo.png"/></div>
+                </div>
+                <div id="nombre">
+                    <h3 id="nombreTexto">Nombre de Pokemon</h3>
+                    <input id="nombrePokemon" type="search" name="nombrePokemon" value="Nombre del Pokemon" />
+                    <input id="buscar" type="button" name="buscar" value="Buscar" onclick="buscaNombre()"/>
+                    
+                </div>
+            </div>
+            <div id="cartas"></div>    
+        </div>
+    </div> 
+</body>
+</html>
+

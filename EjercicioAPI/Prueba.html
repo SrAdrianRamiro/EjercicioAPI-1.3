@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    #fondo
+    {
+        width: 1000px;
+        height: 1000px;
+        background-color:red; 
+    }
+    </style>
+</head>
+<body>
+    <div id="fondo" onclick="clickCarta()"></div>
+
+</body>
+ <script>
+  function clickCarta()
+  {
+      fondo = document.getElementsByTagName("body")[0];
+      fondoTransparente = document.createElement("div");
+      fondoTransparente.onclick = "";
+      fondoTransparente.style.position = "fixed";
+      fondoTransparente.style.top = "0px";
+      fondoTransparente.style.left = "0px";
+      fondoTransparente.style.backgroundColor = "black";
+      fondoTransparente.style.opacity = "0.5";
+      fondoTransparente.style.width= "100%";
+      fondoTransparente.style.height= "100%";
+      cuadroInformacion = document.createElement("div");
+      cuadroInformacion.style.position = "fixed";
+      cuadroInformacion.style.backgroundColor = "white";
+      cuadroInformacion.style.top = "25%";
+      cuadroInformacion.style.left = "25%";
+      cuadroInformacion.style.width = "700px";
+      cuadroInformacion.style.height = "500px";
+      cuadroInformacion.style.opacity = "100";
+      var elemento = document.createElement("h3");
+      var fotocarta = document.createElement("img");
+
+    elemento.innerHTML = "carta.name";
+    //fotocarta.src = carta.imageUrl;
+    elemento.style.fontFamily = "PokemonSolid"; 
+    elemento.style.textAlign = "center";
+
+      cerrar = document.createElement("div");
+      cerrar.style.position = "relative"
+      cerrar.style.left = "100%";
+      cerrar.style.width = "50px";
+      cerrar.style.height = "50px";
+      cerrar.style.backgroundColor = "green";
+      
+      
+      cerrar.addEventListener("click", function()
+      {
+         fondo.removeChild(cuadroInformacion);
+         fondo.removeChild(fondoTransparente);
+      }, false);
+      equis = document.createElement("img");
+      equis.src = "imagen/cruz_roja.png";
+      equis.style.width ="100%";
+      equis.style.height ="100%";
+      cerrar.appendChild(equis);
+      cuadroInformacion.appendChild(cerrar);
+      cuadroInformacion.appendChild(elemento);
+      
+      fondo.appendChild(fondoTransparente);
+      fondo.appendChild(cuadroInformacion);
+  }
+ </script>
+</html>
