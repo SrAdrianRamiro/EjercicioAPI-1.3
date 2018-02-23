@@ -319,9 +319,9 @@
                                         var divcarta = document.createElement("div");
                                         var elemento = document.createElement("h3");
                                         var fotocarta = document.createElement("img");
-
+                                        console.log(carta);
                                         var datos = document.createElement("div");
-                                        datos.id = carta.id;
+                                        datos.setAttribute("id", carta.id); 
                                         datos.setAttribute("vida",carta.hp);
                                         datos.setAttribute("numeroPoke",carta.nationalPokedexNumber);
                                         datos.setAttribute("set",carta.set);
@@ -447,7 +447,7 @@
                         datos.setAttribute("set",carta.set);
                         datos.setAttribute("series",carta.series);
                         datos.setAttribute("artista",carta.artist);
-                        datos.setAttribute("debilidad",carta.weaknesses[0].type);
+                        //datos.setAttribute("debilidad",carta.weaknesses[0].type);
 
 
                         elemento.innerHTML = carta.name;
@@ -582,7 +582,7 @@
                     textoArtista = document.createElement("h2");
                     textoDebilidad = document.createElement("h2");
                     
-                    textoId.innerHTML= "Id: " +Carta.id;
+                    textoId.innerHTML= "Id: " +Carta.getAttribute("id");
                     textoVida.innerHTML = "Vida: "+ Carta.getAttribute("vida");
                     textoNumero.innerHTML = "Numero de pokemon: "+Carta.getAttribute("numeropoke");
                     textoSet.innerHTML = "A que etapa pertence: "+Carta.getAttribute("set");
@@ -598,7 +598,7 @@
                         statusPoke.appendChild(textoSet);
                         statusPoke.appendChild(textoSerie);
                         statusPoke.appendChild(textoArtista);
-                        statusPoke.appendChild(textoDebilidad);
+                        //statusPoke.appendChild(textoDebilidad);
                         
                     
                     
@@ -888,6 +888,7 @@
                                         var fotocarta = document.createElement("img");
 
                                         var datos = document.createElement("div");
+
                                         datos.id = carta.id;
                                         datos.setAttribute("vida",carta.hp);
                                         datos.setAttribute("numeroPoke",carta.nationalPokedexNumber);
