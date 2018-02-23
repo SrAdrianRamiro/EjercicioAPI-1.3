@@ -143,85 +143,107 @@
                 console.log(objeto_json);
 
                 console.log(objeto_json.cards[1]);
+                // TENEMOS UN MAXIMO QUE HEMOS PUESTO DE CARTAS EN ESTE CASO 50
+                 for(var i = 0; i<50; i++)
+                                    {
+                                        //CREAMOS EL OBJETO CARTA PARA EXTRAER INFORMACION UNA A UNA CARTAS
+                                        var carta = objeto_json.cards[i];
+                                        var divcarta = document.createElement("div");
+                                        var elemento = document.createElement("h3");
+                                        var fotocarta = document.createElement("img");
+                                        console.log(carta);
+                                        var datos = document.createElement("div");
+                                        if(carta)//COMPROBAMOS SI NOS HA TRAIDO UNA CARTA EN EL CASO DE QUE LA BUSQUEDA SEA MENOR QUE NUESTRO FOR NO DIBUJARA NADA MAS
+                                        {
+                                            //ESTE DIV ES INVISIBLE LO UNICO QUE QUIERO ES PARA PASARLE ALGO DE INFORMACION DE LA CARTA
+                                        datos.setAttribute("id", carta.id); 
+                                        datos.setAttribute("vida",carta.hp);
+                                        datos.setAttribute("numeroPoke",carta.nationalPokedexNumber);
+                                        datos.setAttribute("set",carta.set);
+                                        datos.setAttribute("series",carta.series);
+                                        datos.setAttribute("artista",carta.artist);
+                                       
+                                        //LE DAMOS ALGO DE ESTILO AL DIV DE CARTAS CON SUS TEXTOS Y SUS IMAGENES
+                                        elemento.innerHTML = carta.name;
+                                        fotocarta.src = carta.imageUrl;
+										fotocarta.className = "zoomIt";
+                                        
+                                        elemento.style.fontFamily = "PokemonSolid"; 
+                                        elemento.style.textAlign = "center";
+                                        //SI LA CARTA TIENE TIPOS (HAY ALGUNAS QUE NO TIENEN)
+                                        if(carta.types)
+                                        {   
+                                            datos.setAttribute("tipillo",carta.types[0])
+                                            //DEPENDIENDO EL TIPO LE ASISNAMOS UNA CLASE  PARA QUE LE APLIQUE UN ESTILO DIFERENTE A LAS LETRAS JUGANDO CON EL CSS 
+                                            switch(carta.types[0])
+                                            {
+                                                case "Water":
+                                                    
+                                                    elemento.className ="strokeWater";
+                                                break;
+                                    
+                                                case "Fire":
+                                                    elemento.className= "strokeFire";
+                                                break;
+                                                case "Colorless":
+                                                    elemento.className = "strokeColorless";
+                                                break;
+                                                case "Psychic":
+                                                    elemento.className= "strokePsychic";
+                                                break;
+                                                case "Darkness":
+                                                    elemento.className= "strokeDarkness";
+                                                break;
+                                                case "Lightning":
+                                                    elemento.className= "strokeLightning";
+                                                break;
+                                                case "Fighting":
+                                                    elemento.className= "strokeFighting";
+                                                break;
+                                                case "Metal":
+                                                    elemento.className= "strokeMetal";
+                                                break;
+                                                case "Grass":
+                                                    elemento.className= "strokeGrass";
+                                                break;
 
-                for(var i = 0; i<50; i++)
-                {
-                    var carta = objeto_json.cards[i];
-                    var divcarta = document.createElement("div");
-                    var elemento = document.createElement("h3");
-                    var fotocarta = document.createElement("img");
+                                                default:
+                                                    
+                                                    elemento.className ="stroke";
+                                                    
+                                            }
+                                        }
+                                     
 
-                    elemento.innerHTML = carta.name;
-                    fotocarta.src = carta.imageUrl;
-					fotocarta.className = "zoomIt";
-                    
-                    elemento.style.fontFamily = "PokemonSolid"; 
-                    elemento.style.textAlign = "center";
-                    
-                    var tipoPokemon = carta.types;
-                    //console.log(tipoPokemon);
+                                        
+                       
+                                        
+                                        elemento.style.border = "solid 4px #DFC60A";
+                                        elemento.style.borderRadius = "5px";
 
-                    
-                        switch(carta.types)
-                        {
-                            case "Water":
-                                
-                                elemento.className ="strokeWater";
-                            break;
-				
-							case "Fire":
-								elemento.className= "strokeFire";
-							break;
-							case "Colorless":
-								elemento.className = "strokeColorless";
-							break;
-							case "Psychic":
-								elemento.className= "strokePsychic";
-							break;
-							case "Darkness":
-								elemento.className= "strokeDarkness";
-							break;
-							case "Lightning":
-								elemento.className= "strokeLightning";
-							break;
-							case "Fighting":
-								elemento.className= "strokeFighting";
-							break;
-							case "Metal":
-								elemento.className= "strokeMetal";
-							break;
-							case "Grass":
-								elemento.className= "strokeGrass";
-							break;
+                                        divcarta.style.float = "left";
+                                        divcarta.style.width = "20%";
+                                        divcarta.style.height = "450px";
+                                        divcarta.style.marginBottom = "50px";
+                                        
 
-                            default:
-                                
-                                elemento.className ="stroke";
-                                
-                        }
-                    
-                    elemento.style.border = "solid 4px #DFC60A";
-                    elemento.style.borderRadius = "5px";
+                                        divcarta.appendChild(elemento);
+                                        divcarta.appendChild(fotocarta);
+                                        divcarta.appendChild(datos);
+                                        //APLICAMOS UN EVENTO QUE CUANDO DEMOS CLICK A LA CARTA EJECUTAREMOS LA FUNCION CLICKCARTA Y
+                                        // LE PASAMOS EL DIV DE LA CARTA CON SU NOMBRE SU IMAGEN Y SU DIV INVISBLE CON LOS DATOS
+                                        divcarta.addEventListener("click", function(){clickCarta(this)}, false);
+                                        cuadroCartas.appendChild(divcarta);
 
-                    divcarta.style.float = "left";
-                    divcarta.style.width = "20%";
-                    divcarta.style.height = "450px";
-                    divcarta.style.marginBottom = "50px";
-                    
-
-                    divcarta.appendChild(elemento);
-                    divcarta.appendChild(fotocarta);
-
-                    cuadroCartas.appendChild(divcarta);
-
-
-                }
+                                        }
+                                    }
             }
         }
         
     }
     function eliminarCartas()
     {
+        //ELIMINA TODAS LAS CARTAS
         var elemento  = document.getElementById("cartas");
         while (elemento.firstChild) {
          elemento.removeChild(elemento.firstChild);
@@ -230,7 +252,7 @@
     function ayudaover()
     {
         
-        
+        //DIBUJA EL CUADRO DE AYUDA
         ayuda = document.createElement("div");
         ayuda.style.width = "200px";
         ayuda.style.height = "200px";
@@ -247,14 +269,14 @@
     }
     function ayudaout()
     { 
-        
+        //BORRA EL CUADRO DE AYUDA
 	    cuadroAyuda.removeChild(ayuda);	
         
         
     }
     function ningunaCarta()
     {
-        
+        //COMPRUEBA QUE NO HAY NINGUNA CARTA Y NOS ENSEÑA UN CUADRO CON UN MENSAJE
         cartas=document.getElementById("cartas");
    
         noExisten = document.createTextNode("No existen Pokemon con esos parametros :)");
@@ -277,6 +299,7 @@
     }
     function buscaNombre()
     {
+    //ESTA FUNCION ESTA MAS VECES PARA SABER QUE HACE IR A LA PRIMERA, LO UNICO QUE CAMBIA ES EL TIPO DE PETICION AL API
       nombrePokemon = document.getElementById("nombrePokemon").value;
       console.log(nombrePokemon);
         
@@ -321,13 +344,16 @@
                                         var fotocarta = document.createElement("img");
                                         console.log(carta);
                                         var datos = document.createElement("div");
+                                        if(carta)
+                                        {
+                                            
                                         datos.setAttribute("id", carta.id); 
                                         datos.setAttribute("vida",carta.hp);
                                         datos.setAttribute("numeroPoke",carta.nationalPokedexNumber);
                                         datos.setAttribute("set",carta.set);
                                         datos.setAttribute("series",carta.series);
                                         datos.setAttribute("artista",carta.artist);
-                                        datos.setAttribute("debilidad",carta.weaknesses[0].type);
+                                       
                                         
                                         elemento.innerHTML = carta.name;
                                         fotocarta.src = carta.imageUrl;
@@ -335,48 +361,51 @@
                                         
                                         elemento.style.fontFamily = "PokemonSolid"; 
                                         elemento.style.textAlign = "center";
-                                        
-                                        var tipoPokemon = carta.types;
-                                        //console.log(tipoPokemon);
+                                        if(carta.types)
+                                        {
+                                            datos.setAttribute("tipillo",carta.types[0])
+                                            switch(carta.types[0])
+                                            {
+                                                case "Water":
+                                                    
+                                                    elemento.className ="strokeWater";
+                                                break;
+                                    
+                                                case "Fire":
+                                                    elemento.className= "strokeFire";
+                                                break;
+                                                case "Colorless":
+                                                    elemento.className = "strokeColorless";
+                                                break;
+                                                case "Psychic":
+                                                    elemento.className= "strokePsychic";
+                                                break;
+                                                case "Darkness":
+                                                    elemento.className= "strokeDarkness";
+                                                break;
+                                                case "Lightning":
+                                                    elemento.className= "strokeLightning";
+                                                break;
+                                                case "Fighting":
+                                                    elemento.className= "strokeFighting";
+                                                break;
+                                                case "Metal":
+                                                    elemento.className= "strokeMetal";
+                                                break;
+                                                case "Grass":
+                                                    elemento.className= "strokeGrass";
+                                                break;
+
+                                                default:
+                                                    
+                                                    elemento.className ="stroke";
+                                                    
+                                            }
+                                        }
+                                     
 
                                         
-                        switch(carta.types[0])
-                        {
-                            case "Water":
-                                
-                                elemento.className ="strokeWater";
-                            break;
-				
-							case "Fire":
-								elemento.className= "strokeFire";
-							break;
-							case "Colorless":
-								elemento.className = "strokeColorless";
-							break;
-							case "Psychic":
-								elemento.className= "strokePsychic";
-							break;
-							case "Darkness":
-								elemento.className= "strokeDarkness";
-							break;
-							case "Lightning":
-								elemento.className= "strokeLightning";
-							break;
-							case "Fighting":
-								elemento.className= "strokeFighting";
-							break;
-							case "Metal":
-								elemento.className= "strokeMetal";
-							break;
-							case "Grass":
-								elemento.className= "strokeGrass";
-							break;
-
-                            default:
-                                
-                                elemento.className ="stroke";
-                                
-                        }
+                       
                                         
                                         elemento.style.border = "solid 4px #DFC60A";
                                         elemento.style.borderRadius = "5px";
@@ -389,9 +418,12 @@
 
                                         divcarta.appendChild(elemento);
                                         divcarta.appendChild(fotocarta);
+                                        divcarta.appendChild(datos);
                                         divcarta.addEventListener("click", function(){clickCarta(this)}, false);
                                         cuadroCartas.appendChild(divcarta);
 
+                                        }
+                                        
 
                                     }
                                 }
@@ -400,6 +432,7 @@
     }
     function prueba (elTipo)
     {
+        //ESTA FUNCION ESTA MAS VECES PARA SABER QUE HACE IR A LA PRIMERA, LO UNICO QUE CAMBIA ES EL TIPO DE PETICION AL API
         eliminarCartas();
             // 1.-Instancia del objeto XMLHttpRequest
             if (window.XMLHttpRequest) {
@@ -436,69 +469,73 @@
                     {
                         var carta = objeto_json.cards[i];
                         var divcarta = document.createElement("div");
-                        
                         var elemento = document.createElement("h3");
                         var fotocarta = document.createElement("img");
-                        
+                        console.log(carta);
                         var datos = document.createElement("div");
-                        datos.id = carta.id;
+                        if(carta)
+                        {
+                            
+                        datos.setAttribute("id", carta.id); 
                         datos.setAttribute("vida",carta.hp);
                         datos.setAttribute("numeroPoke",carta.nationalPokedexNumber);
                         datos.setAttribute("set",carta.set);
                         datos.setAttribute("series",carta.series);
                         datos.setAttribute("artista",carta.artist);
-                        //datos.setAttribute("debilidad",carta.weaknesses[0].type);
-
-
+                        
+                       
+                        
                         elemento.innerHTML = carta.name;
                         fotocarta.src = carta.imageUrl;
-						fotocarta.className = "zoomIt";
+                        fotocarta.className = "zoomIt";
                         
                         elemento.style.fontFamily = "PokemonSolid"; 
                         elemento.style.textAlign = "center";
-						
-                        
-                        var tipoPokemon = carta.types;
-                        //console.log(tipoPokemon);
-
-                        
-                        switch(carta.types[0])
+                        if(carta.types)
                         {
-                            case "Water":
-                                
-                                elemento.className ="strokeWater";
-                            break;
-				
-							case "Fire":
-								elemento.className= "strokeFire";
-							break;
-							case "Colorless":
-								elemento.className = "strokeColorless";
-							break;
-							case "Psychic":
-								elemento.className= "strokePsychic";
-							break;
-							case "Darkness":
-								elemento.className= "strokeDarkness";
-							break;
-							case "Lightning":
-								elemento.className= "strokeLightning";
-							break;
-							case "Fighting":
-								elemento.className= "strokeFighting";
-							break;
-							case "Metal":
-								elemento.className= "strokeMetal";
-							break;
-							case "Grass":
-								elemento.className= "strokeGrass";
-							break;
+                            datos.setAttribute("tipillo",carta.types[0])
+                            switch(carta.types[0])
+                            {
+                                case "Water":
+                                    
+                                    elemento.className ="strokeWater";
+                                break;
+                    
+                                case "Fire":
+                                    elemento.className= "strokeFire";
+                                break;
+                                case "Colorless":
+                                    elemento.className = "strokeColorless";
+                                break;
+                                case "Psychic":
+                                    elemento.className= "strokePsychic";
+                                break;
+                                case "Darkness":
+                                    elemento.className= "strokeDarkness";
+                                break;
+                                case "Lightning":
+                                    elemento.className= "strokeLightning";
+                                break;
+                                case "Fighting":
+                                    elemento.className= "strokeFighting";
+                                break;
+                                case "Metal":
+                                    elemento.className= "strokeMetal";
+                                break;
+                                case "Grass":
+                                    elemento.className= "strokeGrass";
+                                break;
 
-                            default:
-                                
-                                elemento.className ="stroke";
-                                
+                                default:
+                                    
+                                    elemento.className ="stroke";
+                                    
+                            }
                         }
+                     
+
+                        
+       
                         
                         elemento.style.border = "solid 4px #DFC60A";
                         elemento.style.borderRadius = "5px";
@@ -508,14 +545,14 @@
                         divcarta.style.height = "450px";
                         divcarta.style.marginBottom = "50px";
                         
-                        divcarta.appendChild(datos);
+
                         divcarta.appendChild(elemento);
                         divcarta.appendChild(fotocarta);
-                        
+                        divcarta.appendChild(datos);
                         divcarta.addEventListener("click", function(){clickCarta(this)}, false);
                         cuadroCartas.appendChild(divcarta);
 
-
+                        }
                     }
                 }
             }
@@ -526,12 +563,46 @@
   {
     console.log(carta);
     Carta = carta.getElementsByTagName("div")[0];
-    
+    tipillo = Carta.getAttribute("tipillo");
     nombreCartaPokemon =carta.getElementsByTagName("h3")[0].textContent;
-
+    console.log(tipillo);
     imagenCartaPokemon = carta.getElementsByTagName("img")[0].src;
-    
+    var color = "white";
+        if(tipillo)
+        {
+            switch(tipillo)
+            {
+                case "Water":
+                        color = "#3385ff";
+                break;
                     
+                case "Fire":
+                        color = "#b30000";        
+                break;
+                case "Colorless":
+                        color = "#ffffff";         
+                break;
+                case "Psychic":
+                        color = "#8600b3";
+                break;
+                case "Darkness":
+                        color = "#52527a";
+                break;
+                case "Lightning":
+                        color = "#cccc00";
+                break;
+                case "Fighting":
+                        color= "#800000";
+                break;
+                case "Metal":
+                        color = "#8c8c8c";
+                break;
+                case "Grass":
+                        color = "#99ff66";
+                break;
+
+            }
+        }            
                     fondo = document.getElementsByTagName("body")[0];
                     fondoTransparente = document.createElement("div");
                     fondoTransparente.onclick = "";
@@ -544,12 +615,15 @@
                     fondoTransparente.style.height= "100%";
                     cuadroInformacion = document.createElement("div");
                     cuadroInformacion.style.position = "fixed";
-                    cuadroInformacion.style.backgroundColor = "white";
+                    cuadroInformacion.style.backgroundColor = "black";
                     cuadroInformacion.style.top = "25%";
                     cuadroInformacion.style.left = "25%";
                     cuadroInformacion.style.width = "700px";
                     cuadroInformacion.style.height = "500px";
                     cuadroInformacion.style.opacity = "100";
+                    cuadroInformacion.style.boxShadow = "10px 20px 30px 10px "+color;
+                    cuadroInformacion.style.borderRadius = "5px";
+                    cuadroInformacion.style.border = "5px solid black";
                     var elemento = document.createElement("h3");
                     var fotocarta = document.createElement("img");
 
@@ -558,6 +632,7 @@
                     
                     elemento.style.fontFamily = "PokemonSolid"; 
                     elemento.style.textAlign = "center";
+                    elemento.style.color = color;
 
                     cerrar = document.createElement("div");
                     cerrar.style.position = "relative"
@@ -569,10 +644,12 @@
                     statusPoke = document.createElement("div");
                     statusPoke.style.width = "60%";
                     statusPoke.style.height = "70%";
-                    statusPoke.style.backgroundColor = "red";
+                    statusPoke.style.backgroundColor = color;
                     statusPoke.style.position= "relative";
                     statusPoke.style.top = "-360px";
-                    statusPoke.style.left = "275px";
+                    statusPoke.style.left = "270px";
+                    statusPoke.style.borderRadius = "10px";
+                    statusPoke.style.border = "5px solid #ffd11a"
                     
                     textoId = document.createElement("h2");
                     textoVida = document.createElement("h2");
@@ -589,6 +666,14 @@
                     textoSerie.innerHTML = "Serie: " +Carta.getAttribute("series");
                     textoArtista.innerHTML = "Artista: "+Carta.getAttribute("artista");
                     textoDebilidad.innerHTML = "Debilidad: "+Carta.getAttribute("debilidad");
+
+                    textoId.style.textAlign = "center";
+                    textoVida.style.textAlign = "center";
+                    textoNumero.style.textAlign = "center";
+                    textoSet.style.textAlign = "center";
+                    textoSerie.style.textAlign = "center";
+                    textoArtista.style.textAlign = "center";
+                    textoDebilidad.style.textAlign = "center";
                     var textos = [textoId,textoVida,textoNumero, textoSet ,textoSerie, textoArtista, textoDebilidad];
                     
                    
@@ -654,61 +739,44 @@
         cuadroAyuda = document.getElementById("cuadroAyuda");
         cuadroAyuda.onmouseover = ayudaover;
         cuadroAyuda.onmouseout = ayudaout;
-
+        //FONDO DE LA PAGINA
         fondo=document.getElementById("fondo");
         fondo.style.width = "97%"
-        //fondo.style.height = "1000px";
         fondo.style.backgroundImage = "url('imagen/fondo.jpg')";
         fondo.style.border = "double grey 10px";
         fondo.style.borderRadius = "1%";
         fondo.style.position = "absolute";
         fondo.style.left = "1%";
-
+        // LA CABECERA CON SU IMAGEN
         cabecera=document.getElementById("cabecera");
         cabecera.style.width = "70%"
         cabecera.style.height = "300px"
-        
-        
-		
-
         cabecera.style.border = "solid 5px blue";
         cabecera.style.borderRadius = "25%";
         cabecera.style.position = "relative";
         cabecera.style.top = "20px";
         cabecera.style.left= "16%";
         cabecera.style.backgroundRepeat = " no-repeat";
-
+        //LA IMAGEN DE LA CABECERA
         imagen = document.getElementById('imagen');		
 		imagen.src = "imagen/cabecera.png";
         imagen.style.width = "100%";
         imagen.style.height= "95%";
         imagen.style.position = "relative";
 
-
+        //EL BLOQUE DE TODO EL CUADRO DE BUSQUEDA Y LAS CARTAS
         bloqueCartas=document.getElementById("bloqueCartas");
         bloqueCartas.style.width = "90%";
         bloqueCartas.style.height = "100%";
         bloqueCartas.style.position = "relative";
         bloqueCartas.style.left = "5%";
         bloqueCartas.style.top = "50px";
-
+        //CUADRO DE BUSQUEDA ENTERO
         cuadroBusqueda=document.getElementById("cuadroBusqueda");
         cuadroBusqueda.style.width = "100%";
         cuadroBusqueda.style.height = "300px";
-        //cuadroBusqueda.style.backgroundColor = "#056EC5";
         cuadroBusqueda.style.borderRadius = "25px";
-        /*
-         *TYPES: FIRE,WATER, METAL, GRASS, Psychic,Darkness,Lightning,Fighting,Colorless
-         *
-         *SUPERTYPE: Energy, Trainer, Pokémon
-         *
-         *rarity:Rare, Rare Holo, Common, Rare Holo EX,Rare Holo Lv.X, Rare Ultra,Rare Secret
-         *
-         *nationalPokedexNumber: numero
-         *
-         */
-        //fuego = "Fire";
-        //agua = "Water";
+
         cuadroCartas = document.getElementById("cartas");
         //EL CUADRO DE LOS TIPOS
         tiposPoke = document.getElementById("tipo");
@@ -752,7 +820,7 @@
             document.getElementById("tipo"+i).style.margin="5px";
             document.getElementById("tipo"+i).style.border = "Solid 3px white";
             document.getElementById("tipo"+i).style.borderRadius = "10%";
-            //document.getElementById("tipo"+i).style.color = "#404040";
+            
 			document.getElementById("tipo"+i).className = "strokeTipos";
             document.getElementById("tipo"+i).style.textAlign = "center";
 	        document.getElementById("tipo"+i).style.padding="auto";
@@ -760,6 +828,7 @@
             document.getElementById("tipo"+i).onmouseover = resalta;
             document.getElementById("tipo"+i).onmouseout = resalta;
             elTipo = document.getElementById("tipo"+i).textContent;
+            //DEPENDIENDO DEL TIPO QUE ES LA OPCION DIFERENCIAMOS QUE PASAR A LA FUNCION PRUEBA PARA QUE REALICE LA PETICION DE LOS PARAMETROS DIFERENTES
             switch (elTipo)
             {
                 case "Normal":
@@ -821,10 +890,11 @@
                 numeroPokedex.style.width = "100%";
                 numeroPokedex.style.fontFamily= "PokemonSolid";
                 numeroPokedex.style.color= "#404040";
-                numeroPokedex.style.position = "relative"
-                
+                numeroPokedex.style.position = "relative"               
                 numeroPokedex.style.border = "Solid 5px white";
                 numeroPokedex.style.borderRadius = "50px"
+
+                //BOTON PARA BORRAR TODOS LOS DATOS QUE HAY DEL LOS POKEMON
                 numeroBoton = document.getElementById("confirmar");
                 numeroBoton.style.backgroundColor = "#ffcc00";
                 numeroBoton.style.position = "relative";
@@ -842,8 +912,10 @@
                  var select = document.getElementById('numeroPoke');
                  var selectedOption;
                  var numeroPokemonPokedex;
+                 //CUANDO CAMBIAMOS DE NUMERO DE POKEMON DE POKEDEX EJECUTAMOSLA FUNCION PARA QUE REALICE UNA BUSQUEDA
                  select.onchange = function()
                  {
+                     //ESTA FUNCION ESTA MAS VECES PARA SABER QUE HACE IR A LA PRIMERA, LO UNICO QUE CAMBIA ES EL TIPO DE PETICION AL API
                     var selectedOption = select.options[select.selectedIndex];
                     var numeroPokemonPokedex = selectedOption.textContent;
                     
@@ -886,64 +958,70 @@
                                         var divcarta = document.createElement("div");
                                         var elemento = document.createElement("h3");
                                         var fotocarta = document.createElement("img");
-
+                                        console.log(carta);
                                         var datos = document.createElement("div");
-
-                                        datos.id = carta.id;
+                                        if(carta)
+                                        {
+                                            
+                                        datos.setAttribute("id", carta.id); 
                                         datos.setAttribute("vida",carta.hp);
                                         datos.setAttribute("numeroPoke",carta.nationalPokedexNumber);
                                         datos.setAttribute("set",carta.set);
                                         datos.setAttribute("series",carta.series);
                                         datos.setAttribute("artista",carta.artist);
-                                        datos.setAttribute("debilidad",carta.weaknesses[0].type);
+                                       
+                                        
                                         elemento.innerHTML = carta.name;
                                         fotocarta.src = carta.imageUrl;
 										fotocarta.className = "zoomIt";
                                         
                                         elemento.style.fontFamily = "PokemonSolid"; 
                                         elemento.style.textAlign = "center";
-                                        
-                                        var tipoPokemon = carta.types;
-                                        //console.log(tipoPokemon);
+                                        if(carta.types)
+                                        {
+                                            datos.setAttribute("tipillo",carta.types[0])
+                                            switch(carta.types[0])
+                                            {
+                                                case "Water":
+                                                    
+                                                    elemento.className ="strokeWater";
+                                                break;
+                                    
+                                                case "Fire":
+                                                    elemento.className= "strokeFire";
+                                                break;
+                                                case "Colorless":
+                                                    elemento.className = "strokeColorless";
+                                                break;
+                                                case "Psychic":
+                                                    elemento.className= "strokePsychic";
+                                                break;
+                                                case "Darkness":
+                                                    elemento.className= "strokeDarkness";
+                                                break;
+                                                case "Lightning":
+                                                    elemento.className= "strokeLightning";
+                                                break;
+                                                case "Fighting":
+                                                    elemento.className= "strokeFighting";
+                                                break;
+                                                case "Metal":
+                                                    elemento.className= "strokeMetal";
+                                                break;
+                                                case "Grass":
+                                                    elemento.className= "strokeGrass";
+                                                break;
+
+                                                default:
+                                                    
+                                                    elemento.className ="stroke";
+                                                    
+                                            }
+                                        }
+                                     
 
                                         
-                        switch(carta.types[0])
-                        {
-                            case "Water":
-                                
-                                elemento.className ="strokeWater";
-                            break;
-				
-							case "Fire":
-								elemento.className= "strokeFire";
-							break;
-							case "Colorless":
-								elemento.className = "strokeColorless";
-							break;
-							case "Psychic":
-								elemento.className= "strokePsychic";
-							break;
-							case "Darkness":
-								elemento.className= "strokeDarkness";
-							break;
-							case "Lightning":
-								elemento.className= "strokeLightning";
-							break;
-							case "Fighting":
-								elemento.className= "strokeFighting";
-							break;
-							case "Metal":
-								elemento.className= "strokeMetal";
-							break;
-							case "Grass":
-								elemento.className= "strokeGrass";
-							break;
-
-                            default:
-                                
-                                elemento.className ="stroke";
-                                
-                        }
+                       
                                         
                                         elemento.style.border = "solid 4px #DFC60A";
                                         elemento.style.borderRadius = "5px";
@@ -956,11 +1034,11 @@
 
                                         divcarta.appendChild(elemento);
                                         divcarta.appendChild(fotocarta);
-                                        
+                                        divcarta.appendChild(datos);
                                         divcarta.addEventListener("click", function(){clickCarta(this)}, false);
                                         cuadroCartas.appendChild(divcarta);
 
-
+                                        }
                                     }
                                 }
                             }
@@ -983,7 +1061,7 @@
             nombrePoke.style.float = "left";
             nombrePoke.style.paddingLeft = "3px";
             nombrePoke.style.paddingRight = "3px"; 
-
+        //EL INPUT PARA INTRODUCIR EL NOMBRE DE POKEMON
             nombrePokemon = document.getElementById("nombrePokemon");
                 nombrePokemon.style.background = "#ffcc00";
                 nombrePokemon.style.border= "none";
@@ -1000,7 +1078,7 @@
                 nombrePokemon.style.textAlign = "center";
 
                 
-
+        //BOTON DE BUSQUEDA POR NOMBRE
             nombreBoton = document.getElementById("buscar");
                 nombreBoton.style.backgroundColor = "#ffcc00";
                 nombreBoton.style.position = "relative";
